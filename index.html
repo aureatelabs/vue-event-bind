@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Vue Js - Event bind Demo - By Aureatelabs Pvt ltd.</title>
+	<script src="https://unpkg.com/vue@2.6.8/dist/vue.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+	<style>
+			.title{
+    margin-bottom: 20px;
+  }
+  .nav-tabs{
+	margin: auto;
+    width: max-content;
+	border:none;
+  }
+  .header {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .header a {
+    color: #d4d4d4;
+    padding-right: 5px;
+    text-decoration: none;
+    transition: all .3s;
+  }
+
+  .header a.active,
+  .header a:hover,
+  .header a:focus {
+    color: #fff;
+  }
+  .container{
+	  padding: 50px 15px;
+  }
+  #nav li{
+	  padding-right: 10px;
+	  padding-left: 10px;
+	  border-right: 1px solid;
+  }
+  #nav li:last-child{
+	padding-right: 0px;
+	border-right: none;
+  }
+  #nav li:first-child{
+	padding-left: 0px;
+  }
+		</style>
+</head>
+<body>
+	<script src="https://unpkg.com/lodash@4.16.0"></script>
+	<div class="wrapper" id="vue-demos">
+		<header class="header">
+			<h1 class="title">Event bind demo with the vue js</h1>
+			<div id="nav">
+				<!-- To stops the page jumping used "prevent" modifier (short for preventDefault). -->
+				<nav v-bind:class="active" v-on:click.prevent>
+					<!-- on click anchor tag called makeActive method. -->
+					<a href="#" class="home" v-on:click="makeActive('home')">Home</a>
+					<a href="#" class="about" v-on:click="makeActive('projects')">About</a>
+					<a href="#" class="contact" v-on:click="makeActive('contact')">Contact</a>
+				</nav>
+			</div>
+		</header>
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<!-- The mustache expression will be replaced with the value of "active". It will automatically update to reflect  any changes. -->
+					<p>You chose <b>{{active}}</b></p>
+					<hr />
+				</div>
+				<div class="col-12">
+					<h4>
+						Event bind with the v-model directive
+					</h4>
+					<div class="form-group">
+						<label for="">
+							Please enter text in textarea it will be bind with the below div
+						</label>
+						<textarea v-model="textAreamsg" class="form-control" name="text-area"></textarea>
+					</div>
+					<h5>
+						Output: 
+					</h5>
+					<div> {{ textAreamsg }}</div>
+					<hr />
+				</div>
+				<div class="col-12">
+					<h4>
+						Filter User demo
+					</h4>
+					<div class="row">
+						<div class="col-12">
+							<div class="bar">
+								<!-- Create a binding between the searchString model and the text field -->
+								<input type="text" v-model="searchString" placeholder="Enter your search user" />
+							</div>
+						</div>
+						<div class="col-12">
+							<ul class="list-style">
+								<!-- Render a li element for every entry in the computed filteredUsers array. -->
+								<li v-for="user in filteredUsers">
+									<div class="well">
+										<p>
+											<b>Name:</b><span>{{user.name}}</span>
+										</p>
+										<p>
+											<b>Designation:</b><span>{{user.designation}}</span>
+										</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		// Creating a new Vue instance.
+		var demo = new Vue({
+			// A DOM element to mount our view model.
+			el: '#vue-demos',
+			// Define properties and give them initial values.
+			data: {
+				active: 'home', //this is for the navigation click event bind
+				textAreamsg: 'Please enter any text', //this is for the event bind with text area
+				searchString: "", //this is for the filter user demo
+				users: [
+					{
+						"name": "Joe Smith",
+						"designation": "Web developer"
+					},
+					{
+						"name": "Json Roy",
+						"designation": "Sr. Web developer"
+					},
+					{
+						"name": "Stive Johnson",
+						"designation": "UI/UX Designer"
+					},
+					{
+						"name": "Roni roy",
+						"designation": "Project Manager"
+					}
+				]
+			},
+			// Functions we will be using.
+			methods: {
+				makeActive: function(item){
+					// Once click anchor tag this method will change the active variable value.
+					this.active = item;
+				}
+			},
+			computed: {
+				// A computed property that holds only those users that match the searchString.
+				filteredUsers: function () {
+					var users_array = this.users,
+						searchString = this.searchString;
+					if(!searchString){
+						return users_array;
+					}
+					searchString = searchString.trim().toLowerCase();
+					users_array = users_array.filter(function(user){
+						if(user.name.toLowerCase().indexOf(searchString) !== -1){
+							return user;
+						}else if(user.designation.toLowerCase().indexOf(searchString) !== -1){
+							return user;
+						}
+					})
+					// Return an array with the filtered data.
+					return users_array;
+				}
+			}
+		});
+	</script>
+</body>
+</html>
